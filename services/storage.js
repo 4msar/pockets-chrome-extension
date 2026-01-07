@@ -6,39 +6,9 @@
 const StorageService = {
   // Storage keys
   KEYS: {
-    API_URL: 'apiUrl',
     API_TOKEN: 'apiToken',
     SELECTED_PROJECT: 'selectedProject',
     SETTINGS: 'settings'
-  },
-
-  /**
-   * Get API URL from storage
-   * @returns {Promise<string|null>}
-   */
-  async getApiUrl() {
-    try {
-      const result = await chrome.storage.local.get(this.KEYS.API_URL);
-      return result[this.KEYS.API_URL] || null;
-    } catch (error) {
-      console.error('Error getting API URL:', error);
-      return null;
-    }
-  },
-
-  /**
-   * Set API URL in storage
-   * @param {string} url - The API URL to store
-   * @returns {Promise<boolean>}
-   */
-  async setApiUrl(url) {
-    try {
-      await chrome.storage.local.set({ [this.KEYS.API_URL]: url });
-      return true;
-    } catch (error) {
-      console.error('Error setting API URL:', error);
-      return false;
-    }
   },
 
   /**
@@ -106,19 +76,16 @@ const StorageService = {
   async getAllSettings() {
     try {
       const result = await chrome.storage.local.get([
-        this.KEYS.API_URL,
         this.KEYS.API_TOKEN,
         this.KEYS.SELECTED_PROJECT
       ]);
       return {
-        apiUrl: result[this.KEYS.API_URL] || null,
         apiToken: result[this.KEYS.API_TOKEN] || null,
         selectedProject: result[this.KEYS.SELECTED_PROJECT] || null
       };
     } catch (error) {
       console.error('Error getting all settings:', error);
       return {
-        apiUrl: null,
         apiToken: null,
         selectedProject: null
       };
@@ -127,13 +94,12 @@ const StorageService = {
 
   /**
    * Save all settings at once
-   * @param {Object} settings - Settings object containing apiUrl, apiToken, and selectedProject
+   * @param {Object} settings - Settings object containing apiToken and selectedProject
    * @returns {Promise<boolean>}
    */
   async saveAllSettings(settings) {
     try {
       const data = {};
-      if (settings.apiUrl) data[this.KEYS.API_URL] = settings.apiUrl;
       if (settings.apiToken) data[this.KEYS.API_TOKEN] = settings.apiToken;
       if (settings.selectedProject) data[this.KEYS.SELECTED_PROJECT] = settings.selectedProject;
       
@@ -166,7 +132,7 @@ const StorageService = {
   async isConfigured() {
     try {
       const settings = await this.getAllSettings();
-      return !!(settings.apiUrl && settings.apiToken && settings.selectedProject);
+      return !!(settings.apiToken && settings.selectedProject);
     } catch (error) {
       console.error('Error checking configuration:', error);
       return false;
@@ -182,9 +148,8 @@ const StorageService = {
       const settings = await this.getAllSettings();
       const missing = [];
       
-      if (!settings.apiUrl) missing.push('API URL');
-      if (!settings.apiToken) missing.push('API Token');
-      if (!settings.selectedProject) missing.push('Selected Project');
+      if (!settings.apiToken) missing.push('API Key');
+      if (!settings.selectedProject) missing.push('Project ID');
       
       return {
         valid: missing.length === 0,

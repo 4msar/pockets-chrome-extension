@@ -19,36 +19,35 @@
 
     <!-- Main Content -->
     <main class="main">
-      <!-- Step 1: API Configuration -->
+      <!-- API Configuration -->
       <section class="section">
         <div class="section-header">
-          <span class="step-badge">Step 1</span>
           <h2>API Configuration</h2>
         </div>
         
         <div class="card">
           <div class="form-group">
-            <label for="apiUrl">API URL</label>
-            <input 
-              type="url" 
-              id="apiUrl" 
-              class="input" 
-              placeholder="https://your-api-url.com"
-              required
-            >
-            <small class="help-text">Enter your Laravel Pockets API URL (e.g., https://kv.fourorbit.com)</small>
-          </div>
-
-          <div class="form-group">
-            <label for="apiToken">API Token</label>
+            <label for="apiToken">API Key</label>
             <input 
               type="password" 
               id="apiToken" 
               class="input" 
-              placeholder="Your Sanctum access token"
+              placeholder="Your API key"
               required
             >
-            <small class="help-text">Enter your Laravel Sanctum API token</small>
+            <small class="help-text">Enter your API key from your Pockets application</small>
+          </div>
+
+          <div class="form-group">
+            <label for="projectId">Project ID</label>
+            <input 
+              type="text" 
+              id="projectId" 
+              class="input" 
+              placeholder="Enter your project ID"
+              required
+            >
+            <small class="help-text">Enter the ID of the project where links will be saved</small>
           </div>
 
           <div class="form-actions">
@@ -62,51 +61,6 @@
 
           <div class="message" id="connectionMessage" style="display: none;">
             <span class="message-text" id="connectionMessageText"></span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 2: Project Selection -->
-      <section class="section">
-        <div class="section-header">
-          <span class="step-badge">Step 2</span>
-          <h2>Project Selection</h2>
-        </div>
-        
-        <div class="card">
-          <div class="form-group">
-            <label for="projectSelect">Select Project</label>
-            <select id="projectSelect" class="select" disabled>
-              <option value="">-- Select a project --</option>
-            </select>
-            <small class="help-text">Test connection first to load available projects</small>
-          </div>
-
-          <!-- Loading Projects -->
-          <div class="loading-projects" id="loadingProjects" style="display: none;">
-            <span class="spinner small"></span>
-            <span>Loading projects...</span>
-          </div>
-
-          <!-- No Projects Alert -->
-          <div class="alert alert-warning" id="noProjectsAlert" style="display: none;">
-            <strong>No projects found</strong>
-            <p>Please create a project in your Pockets application first.</p>
-          </div>
-
-          <!-- Selected Project Info -->
-          <div class="project-info" id="projectInfo" style="display: none;">
-            <div class="info-header">Selected Project</div>
-            <div class="info-content">
-              <div class="info-item">
-                <span class="info-label">Name:</span>
-                <span class="info-value" id="selectedProjectName">-</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">ID:</span>
-                <span class="info-value" id="selectedProjectId">-</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -135,7 +89,7 @@
     <!-- Footer -->
     <footer class="footer">
       <p>
-        💡 <strong>Tip:</strong> You can get your API token from your Pockets application settings.
+        💡 <strong>Tip:</strong> You can get your API key and Project ID from your Pockets application settings.
       </p>
     </footer>
   </div>
