@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pockets - Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>
+        <span class="icon">📑</span>
+        Pockets Settings
+      </h1>
+      <p class="subtitle">Configure your Pockets extension</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Step 1: API Configuration -->
+      <section class="section">
+        <div class="section-header">
+          <span class="step-badge">Step 1</span>
+          <h2>API Configuration</h2>
+        </div>
+        
+        <div class="card">
+          <div class="form-group">
+            <label for="apiUrl">API URL</label>
+            <input 
+              type="url" 
+              id="apiUrl" 
+              class="input" 
+              placeholder="https://your-api-url.com"
+              required
+            >
+            <small class="help-text">Enter your Laravel Pockets API URL (e.g., https://kv.fourorbit.com)</small>
+          </div>
+
+          <div class="form-group">
+            <label for="apiToken">API Token</label>
+            <input 
+              type="password" 
+              id="apiToken" 
+              class="input" 
+              placeholder="Your Sanctum access token"
+              required
+            >
+            <small class="help-text">Enter your Laravel Sanctum API token</small>
+          </div>
+
+          <div class="form-actions">
+            <button class="button secondary" id="testConnectionBtn">
+              <span class="btn-text">Test Connection</span>
+              <span class="btn-spinner" style="display: none;">
+                <span class="spinner small"></span>
+              </span>
+            </button>
+          </div>
+
+          <div class="message" id="connectionMessage" style="display: none;">
+            <span class="message-text" id="connectionMessageText"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Project Selection -->
+      <section class="section">
+        <div class="section-header">
+          <span class="step-badge">Step 2</span>
+          <h2>Project Selection</h2>
+        </div>
+        
+        <div class="card">
+          <div class="form-group">
+            <label for="projectSelect">Select Project</label>
+            <select id="projectSelect" class="select" disabled>
+              <option value="">-- Select a project --</option>
+            </select>
+            <small class="help-text">Test connection first to load available projects</small>
+          </div>
+
+          <!-- Loading Projects -->
+          <div class="loading-projects" id="loadingProjects" style="display: none;">
+            <span class="spinner small"></span>
+            <span>Loading projects...</span>
+          </div>
+
+          <!-- No Projects Alert -->
+          <div class="alert alert-warning" id="noProjectsAlert" style="display: none;">
+            <strong>No projects found</strong>
+            <p>Please create a project in your Pockets application first.</p>
+          </div>
+
+          <!-- Selected Project Info -->
+          <div class="project-info" id="projectInfo" style="display: none;">
+            <div class="info-header">Selected Project</div>
+            <div class="info-content">
+              <div class="info-item">
+                <span class="info-label">Name:</span>
+                <span class="info-value" id="selectedProjectName">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">ID:</span>
+                <span class="info-value" id="selectedProjectId">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <section class="section">
+        <div class="actions">
+          <button class="button primary large" id="saveSettingsBtn">
+            <span class="btn-text">💾 Save Settings</span>
+            <span class="btn-spinner" style="display: none;">
+              <span class="spinner small"></span>
+              Saving...
+            </span>
+          </button>
+          <button class="button danger" id="clearSettingsBtn">
+            🗑️ Clear Settings
+          </button>
+        </div>
+
+        <div class="message" id="saveMessage" style="display: none;">
+          <span class="message-text" id="saveMessageText"></span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        💡 <strong>Tip:</strong> You can get your API token from your Pockets application settings.
+      </p>
+    </footer>
+  </div>
+
+  <script src="../services/storage.js"></script>
+  <script src="../services/api.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

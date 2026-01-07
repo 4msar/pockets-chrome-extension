@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pockets - Save Link</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <!-- Header -->
+    <div class="header">
+      <h1>
+        <span class="icon">📑</span>
+        Pockets
+      </h1>
+      <button class="settings-btn" id="settingsBtn" title="Settings">
+        ⚙️
+      </button>
+    </div>
+
+    <!-- Not Configured State -->
+    <div class="not-configured" id="notConfigured" style="display: none;">
+      <div class="warning-icon">⚠️</div>
+      <p>Extension not configured</p>
+      <p class="small-text">Please configure the extension in settings to start saving links.</p>
+      <button class="button primary" id="goToSettingsBtn">
+        Go to Settings
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="mainContent">
+      <!-- Loading State -->
+      <div class="loading" id="loadingState">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+
+      <!-- Form -->
+      <div class="form" id="formContent" style="display: none;">
+        <!-- Page Title -->
+        <div class="form-group">
+          <label for="pageTitle">Title</label>
+          <input 
+            type="text" 
+            id="pageTitle" 
+            class="input" 
+            readonly
+            placeholder="Page title"
+          >
+        </div>
+
+        <!-- Page URL -->
+        <div class="form-group">
+          <label for="pageUrl">URL</label>
+          <input 
+            type="text" 
+            id="pageUrl" 
+            class="input" 
+            readonly
+            placeholder="Page URL"
+          >
+        </div>
+
+        <!-- Selected Project Badge -->
+        <div class="project-badge" id="projectBadge">
+          <span class="badge-label">Project:</span>
+          <span class="badge-value" id="projectName">-</span>
+        </div>
+
+        <!-- Save Button -->
+        <button class="button primary save-btn" id="saveBtn">
+          <span class="btn-text">Save Link</span>
+          <span class="btn-spinner" style="display: none;">
+            <span class="spinner small"></span>
+            Saving...
+          </span>
+        </button>
+
+        <!-- Message Area -->
+        <div class="message" id="messageArea" style="display: none;">
+          <span class="message-text" id="messageText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../services/storage.js"></script>
+  <script src="../services/api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
