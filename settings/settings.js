@@ -279,11 +279,6 @@ async function handleSaveSettings() {
     
     if (success) {
       showSaveMessage('Settings saved successfully! ✅', 'success');
-      
-      // Show success for a moment then could close
-      setTimeout(() => {
-        // Settings saved, user can continue using the extension
-      }, 2000);
     } else {
       showSaveMessage('Failed to save settings', 'error');
     }
