@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Pockets - Save Links",
   "version": "1.0.0",
-  "description": "Save bookmarks to your Laravel Pockets application",
+  "description": "A browser extension to save and manage your favorite links easily.",
   "permissions": [
     "storage",
     "activeTab",
