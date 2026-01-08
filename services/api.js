@@ -4,12 +4,15 @@
  */
 
 const ApiService = {
+  // Hardcoded API URL
+  API_URL: 'https://pockets.fourorbit.com',
+
   /**
    * Get API configuration from storage
    * @returns {Promise<Object>}
    */
   async getConfig() {
-    const apiUrl = await StorageService.getApiUrl();
+    const apiUrl = this.API_URL;
     const apiToken = await StorageService.getApiToken();
     return { apiUrl, apiToken };
   },
@@ -23,7 +26,7 @@ const ApiService = {
   async makeRequest(endpoint, options = {}) {
     const { apiUrl, apiToken } = await this.getConfig();
     
-    if (!apiUrl || !apiToken) {
+    if (!apiToken) {
       throw new Error('API not configured. Please configure in settings.');
     }
 
@@ -72,7 +75,7 @@ const ApiService = {
     } catch (error) {
       // Handle network errors
       if (error.message.includes('fetch')) {
-        throw new Error('Network error. Please check your internet connection and API URL.');
+        throw new Error('Network error. Please check your internet connection.');
       }
       throw error;
     }
@@ -86,10 +89,10 @@ const ApiService = {
     try {
       const { apiUrl, apiToken } = await this.getConfig();
       
-      if (!apiUrl || !apiToken) {
+      if (!apiToken) {
         return {
           success: false,
-          message: 'Please enter both API URL and token'
+          message: 'Please enter API key'
         };
       }
 

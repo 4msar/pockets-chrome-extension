@@ -22,10 +22,9 @@ A Chrome extension to save bookmarks and links to your Laravel Pockets applicati
 
 1. Click the extension icon
 2. Go to Settings
-3. Enter your API URL (e.g., `https://kv.fourorbit.com`)
-4. Enter your Sanctum access token
-5. Select a project
-6. Save settings
+3. Enter your API key
+4. Enter your Project ID
+5. Save settings
 
 ## Usage
 
