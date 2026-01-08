@@ -1,101 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pockets - Settings</title>
-  <link rel="stylesheet" href="settings.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <h1>
-        <span class="icon">📑</span>
-        Pockets Settings
-      </h1>
-      <p class="subtitle">Configure your Pockets extension</p>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pockets - Settings</title>
+        <link rel="stylesheet" href="settings.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <h1>
+                    <span class="icon">📑</span>
+                    Pockets Settings
+                </h1>
+                <p class="subtitle">Configure your Pockets extension</p>
+            </header>
 
-    <!-- Main Content -->
-    <main class="main">
-      <!-- API Configuration -->
-      <section class="section">
-        <div class="section-header">
-          <h2>API Configuration</h2>
+            <!-- Main Content -->
+            <main class="main">
+                <!-- API Configuration -->
+                <section class="section">
+                    <div class="section-header">
+                        <h2>API Configuration</h2>
+                    </div>
+
+                    <div class="card">
+                        <div class="form-group">
+                            <label for="apiToken">API Key</label>
+                            <input
+                                type="password"
+                                id="apiToken"
+                                class="input"
+                                placeholder="Your API key"
+                                required
+                            />
+                            <small class="help-text"
+                                >Enter your API key from your Pockets
+                                application</small
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectId">Project ID</label>
+                            <input
+                                type="text"
+                                id="projectId"
+                                class="input"
+                                placeholder="Enter your project ID"
+                                required
+                            />
+                            <small class="help-text"
+                                >Enter the ID of the project where links will be
+                                saved</small
+                            >
+                        </div>
+
+                        <div class="form-actions">
+                            <button
+                                class="button secondary"
+                                id="testConnectionBtn"
+                            >
+                                <span class="btn-text">Test Connection</span>
+                                <span class="btn-spinner" style="display: none">
+                                    <span class="spinner small"></span>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div
+                            class="message"
+                            id="connectionMessage"
+                            style="display: none"
+                        >
+                            <span
+                                class="message-text"
+                                id="connectionMessageText"
+                            ></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Actions -->
+                <section class="section">
+                    <div class="actions">
+                        <button
+                            class="button primary large"
+                            id="saveSettingsBtn"
+                        >
+                            <span class="btn-text">💾 Save Settings</span>
+                            <span class="btn-spinner" style="display: none">
+                                <span class="spinner small"></span>
+                                Saving...
+                            </span>
+                        </button>
+                        <button class="button danger" id="clearSettingsBtn">
+                            🗑️ Clear Settings
+                        </button>
+                    </div>
+
+                    <div class="message" id="saveMessage" style="display: none">
+                        <span class="message-text" id="saveMessageText"></span>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>
+                    💡 <strong>Tip:</strong> You can get your API key and
+                    Project ID from your KV application project settings,
+                    <a target="_blank" href="https://kv.fourorbit.com/api-keys"
+                        >register here</a
+                    >.
+                </p>
+            </footer>
         </div>
-        
-        <div class="card">
-          <div class="form-group">
-            <label for="apiToken">API Key</label>
-            <input 
-              type="password" 
-              id="apiToken" 
-              class="input" 
-              placeholder="Your API key"
-              required
-            >
-            <small class="help-text">Enter your API key from your Pockets application</small>
-          </div>
 
-          <div class="form-group">
-            <label for="projectId">Project ID</label>
-            <input 
-              type="text" 
-              id="projectId" 
-              class="input" 
-              placeholder="Enter your project ID"
-              required
-            >
-            <small class="help-text">Enter the ID of the project where links will be saved</small>
-          </div>
-
-          <div class="form-actions">
-            <button class="button secondary" id="testConnectionBtn">
-              <span class="btn-text">Test Connection</span>
-              <span class="btn-spinner" style="display: none;">
-                <span class="spinner small"></span>
-              </span>
-            </button>
-          </div>
-
-          <div class="message" id="connectionMessage" style="display: none;">
-            <span class="message-text" id="connectionMessageText"></span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Actions -->
-      <section class="section">
-        <div class="actions">
-          <button class="button primary large" id="saveSettingsBtn">
-            <span class="btn-text">💾 Save Settings</span>
-            <span class="btn-spinner" style="display: none;">
-              <span class="spinner small"></span>
-              Saving...
-            </span>
-          </button>
-          <button class="button danger" id="clearSettingsBtn">
-            🗑️ Clear Settings
-          </button>
-        </div>
-
-        <div class="message" id="saveMessage" style="display: none;">
-          <span class="message-text" id="saveMessageText"></span>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <p>
-        💡 <strong>Tip:</strong> You can get your API key and Project ID from your Pockets application settings.
-      </p>
-    </footer>
-  </div>
-
-  <script src="../services/storage.js"></script>
-  <script src="../services/api.js"></script>
-  <script src="settings.js"></script>
-</body>
+        <script src="../services/storage.js"></script>
+        <script src="../services/api.js"></script>
+        <script src="settings.js"></script>
+    </body>
 </html>
