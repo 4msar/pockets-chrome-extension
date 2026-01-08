@@ -2,6 +2,9 @@
 
 A Chrome extension to save bookmarks and links to your Laravel Pockets application.
 
+Before start using this, you need to obtain an API key from [here](https://kv.fourorbit.com/), also need to create a project.
+To show your links, check out this [repository](https://github.com/4msar/link-hub) as well.
+
 ## Features
 
 - 🔖 Save links via context menu (right-click)
