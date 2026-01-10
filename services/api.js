@@ -5,7 +5,7 @@
 
 const ApiService = {
     // Hardcoded API URL
-    API_URL: "https://kv.fourorbit.com",
+    API_URL: "https://silo.msar.dev",
 
     /**
      * Get API configuration from storage
