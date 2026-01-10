@@ -63,6 +63,22 @@ body {
     padding: 40px 20px;
 }
 
+/* Search Input */
+.search-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+}
+
 /* Not Configured State */
 .not-configured {
     text-align: center;

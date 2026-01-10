@@ -38,6 +38,7 @@ function initElements() {
         loadMoreContainer: document.getElementById("loadMoreContainer"),
         loadMoreBtn: document.getElementById("loadMoreBtn"),
         goToSettingsBtn: document.getElementById("goToSettingsBtn"),
+        searchInput: document.getElementById("searchInput"),
     };
 }
 
@@ -50,6 +51,22 @@ function setupEventListeners() {
 
     // Load more button
     elements.loadMoreBtn.addEventListener("click", loadMoreLinks);
+
+    // Search input
+    // Debounce function for search
+    let searchTimeout;
+
+    elements.searchInput.addEventListener("input", (event) => {
+        const query = event.target.value.toLowerCase();
+
+        // Clear existing timeout
+        clearTimeout(searchTimeout);
+
+        // Set new timeout for debounced search
+        searchTimeout = setTimeout(() => {
+            loadLinks(1, query);
+        }, 500);
+    });
 }
 
 /**
@@ -79,7 +96,7 @@ async function initializeUI() {
 /**
  * Load links from API
  */
-async function loadLinks(page = 1) {
+async function loadLinks(page = 1, searchQuery = "") {
     try {
         if (isLoading) return;
         isLoading = true;
@@ -92,7 +109,7 @@ async function loadLinks(page = 1) {
         }
 
         // Get links from API
-        const response = await ApiService.getProjectsData(page);
+        const response = await ApiService.getProjectsData(page, searchQuery);
 
         console.log("Links Response:", response);
 
@@ -141,7 +158,7 @@ async function loadLinks(page = 1) {
  */
 async function loadMoreLinks() {
     currentPage++;
-    await loadLinks(currentPage);
+    await loadLinks(currentPage, elements.searchInput.value);
 }
 
 /**

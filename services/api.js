@@ -123,14 +123,22 @@ const ApiService = {
      * Get all projects from API
      *
      * @param {number} page - Page number for pagination
+     * @param {string} searchQuery - Search query for filtering projects
      * @returns {Promise<Array>}
      */
-    async getProjectsData(page = 1) {
+    async getProjectsData(page = 1, searchQuery = "") {
         try {
             const selectedProject = await StorageService.getSelectedProject();
             console.log("Selected Project:", selectedProject);
+
+            const params = new URLSearchParams();
+            params.append("page", page);
+            if (searchQuery) {
+                params.append("search", searchQuery);
+            }
+
             const response = await this.makeRequest(
-                `/api/values/${selectedProject.id}?page=${page}`,
+                `/api/values/${selectedProject.id}?${params}`,
                 {
                     method: "GET",
                 }
