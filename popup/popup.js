@@ -34,6 +34,7 @@ function initElements() {
         mainContent: document.getElementById("mainContent"),
         loadingState: document.getElementById("loadingState"),
         formContent: document.getElementById("formContent"),
+        linksBtn: document.getElementById("linksBtn"),
         settingsBtn: document.getElementById("settingsBtn"),
         goToSettingsBtn: document.getElementById("goToSettingsBtn"),
         pageTitle: document.getElementById("pageTitle"),
@@ -49,6 +50,9 @@ function initElements() {
  * Set up event listeners
  */
 function setupEventListeners() {
+    // Links button
+    elements.linksBtn.addEventListener("click", openLinks);
+
     // Settings button
     elements.settingsBtn.addEventListener("click", openSettings);
     elements.goToSettingsBtn.addEventListener("click", openSettings);
@@ -168,6 +172,15 @@ async function handleSave() {
         elements.saveBtn.disabled = false;
         elements.saveBtn.classList.remove("loading");
     }
+}
+
+/**
+ * links page
+ */
+function openLinks() {
+    chrome.tabs.create({
+        url: chrome.runtime.getURL("links/links.html"),
+    });
 }
 
 /**

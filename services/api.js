@@ -121,21 +121,22 @@ const ApiService = {
 
     /**
      * Get all projects from API
+     *
+     * @param {number} page - Page number for pagination
      * @returns {Promise<Array>}
      */
-    async getProjectsData() {
+    async getProjectsData(page = 1) {
         try {
             const selectedProject = await StorageService.getSelectedProject();
             console.log("Selected Project:", selectedProject);
             const response = await this.makeRequest(
-                `/api/values/${selectedProject.id}`,
+                `/api/values/${selectedProject.id}?page=${page}`,
                 {
                     method: "GET",
                 }
             );
 
-            // Laravel API typically returns data in a 'data' property
-            return response.data || response;
+            return response;
         } catch (error) {
             console.error("Error fetching projects:", error);
             throw error;
