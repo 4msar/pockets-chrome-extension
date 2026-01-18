@@ -37,17 +37,20 @@ body.docs .container {
     padding: 40px 20px;
 }
 
-body.home .hero {
+body.home .hero,
+body.docs .hero {
     text-align: center;
     padding: 60px 20px;
 }
 
-body.home .hero h1 {
+body.home .hero h1,
+body.docs .hero h1 {
     font-size: 3rem;
     margin-bottom: 20px;
 }
 
-body.home .hero p {
+body.home .hero p,
+body.docs .hero p {
     font-size: 1.2rem;
     color: #666;
     margin-bottom: 30px;
@@ -106,4 +109,15 @@ body.home footer a,
 body.docs footer a {
     color: #333;
     margin: 0 10px;
+}
+
+body.docs article {
+    font-size: large;
+    line-height: 2;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+body.docs article p {
+    margin-bottom: 20px;
 }
