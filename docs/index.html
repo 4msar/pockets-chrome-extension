@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -10,72 +10,8 @@
         <title>Pockets - Save Links Chrome Extension</title>
         <!-- The style CSS file -->
         <link rel="stylesheet" href="style.css" />
-        <style>
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 40px 20px;
-            }
-            .hero {
-                text-align: center;
-                padding: 60px 20px;
-            }
-            .hero h1 {
-                font-size: 3rem;
-                margin-bottom: 20px;
-            }
-            .hero p {
-                font-size: 1.2rem;
-                color: #666;
-                margin-bottom: 30px;
-            }
-            .features {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 30px;
-                padding: 40px 0;
-            }
-            .feature {
-                padding: 20px;
-                border: 1px solid #eee;
-                border-radius: 8px;
-                text-align: center;
-            }
-            .feature h3 {
-                margin-bottom: 10px;
-            }
-            .feature p {
-                color: #666;
-            }
-            .cta {
-                text-align: center;
-                padding: 40px 20px;
-            }
-            .cta a.button {
-                display: inline-block;
-                padding: 12px 30px;
-                background-color: #333;
-                color: #fff;
-                text-decoration: none;
-                border-radius: 5px;
-                margin: 10px;
-            }
-            .cta a.button:hover {
-                background-color: #555;
-            }
-            footer {
-                text-align: center;
-                padding: 20px;
-                border-top: 1px solid #eee;
-                margin-top: 40px;
-            }
-            footer a {
-                color: #333;
-                margin: 0 10px;
-            }
-        </style>
     </head>
-    <body>
+    <body class="home">
         <div class="container">
             <section class="hero">
                 <h1>Pockets</h1>
@@ -101,10 +37,11 @@
                     </p>
                 </div>
                 <div class="feature">
-                    <h3>Local Storage</h3>
+                    <h3>Secure Storage</h3>
                     <p>
-                        Your links are stored locally in your browser for
-                        privacy.
+                        Your links are stored in a secure storage via
+                        <a target="_blank" href="http://silo.msar.dev/">silo</a>
+                        API.
                     </p>
                 </div>
                 <div class="feature">
@@ -137,13 +74,20 @@
 
                     <br />
 
-                    In future updates, we plan to integrate link viewing
-                    directly into the extension.
+                    Or visit your installed extension links page by clicking
+                    <strong>"View All Links"</strong> in the extension popup.
+
+                    <br />
+
+                    For more information how to setup the extension and the app,
+                    visit the
+                    <a href="guide.html">Guide [How to use]</a>.
                 </p>
             </section>
 
             <footer>
                 <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="guide.html">Guide [How to use]</a>
                 <a href="../index.html">Home</a>
             </footer>
         </div>
