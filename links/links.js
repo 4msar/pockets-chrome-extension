@@ -137,8 +137,8 @@ async function loadLinks(page = 1, searchQuery = "") {
 
         // Handle pagination (if API supports it in the future)
         // For now, we'll load all links at once
-        hasMorePages = response.next_page_url ? true : false;
-        elements.loadMoreContainer.style.display = response.next_page_url
+        hasMorePages = response.links.next ? true : false;
+        elements.loadMoreContainer.style.display = response.links.next
             ? "block"
             : "none";
     } catch (error) {
@@ -199,7 +199,7 @@ function createLinkCard(link) {
 
     const svgIcon = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "svg"
+        "svg",
     );
     svgIcon.setAttribute("width", "24");
     svgIcon.setAttribute("height", "24");

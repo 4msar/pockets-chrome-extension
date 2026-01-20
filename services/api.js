@@ -5,7 +5,7 @@
 
 const ApiService = {
     // Hardcoded API URL
-    API_URL: "https://silo.msar.dev",
+    API_URL: "https://silo.msar.dev/api/v1",
 
     /**
      * Get API configuration from storage
@@ -19,7 +19,7 @@ const ApiService = {
 
     /**
      * Make an authenticated API request
-     * @param {string} endpoint - API endpoint (e.g., '/api/projects')
+     * @param {string} endpoint - API endpoint (e.g., '/projects')
      * @param {Object} options - Fetch options
      * @returns {Promise<Object>}
      */
@@ -28,7 +28,7 @@ const ApiService = {
 
         if (!apiToken) {
             throw new Error(
-                "API not configured. Please configure in settings."
+                "API not configured. Please configure in settings.",
             );
         }
 
@@ -55,7 +55,7 @@ const ApiService = {
             // Handle 401 Unauthorized
             if (response.status === 401) {
                 throw new Error(
-                    "Authentication failed. Please check your API token in settings."
+                    "Authentication failed. Please check your API token in settings.",
                 );
             }
 
@@ -82,7 +82,7 @@ const ApiService = {
             // Handle network errors
             if (error.message.includes("fetch")) {
                 throw new Error(
-                    "Network error. Please check your internet connection."
+                    "Network error. Please check your internet connection.",
                 );
             }
             throw error;
@@ -138,10 +138,10 @@ const ApiService = {
             }
 
             const response = await this.makeRequest(
-                `/api/values/${selectedProject.id}?${params}`,
+                `/values/${selectedProject.id}?${params}`,
                 {
                     method: "GET",
-                }
+                },
             );
 
             return response;
@@ -161,21 +161,18 @@ const ApiService = {
         try {
             if (!projectId) {
                 throw new Error(
-                    "No project selected. Please select a project in settings."
+                    "No project selected. Please select a project in settings.",
                 );
             }
 
-            const response = await this.makeRequest(
-                `/api/values/${projectId}`,
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        name: linkData.title,
-                        type: "url",
-                        value: linkData.value,
-                    }),
-                }
-            );
+            const response = await this.makeRequest(`/values/${projectId}`, {
+                method: "POST",
+                body: JSON.stringify({
+                    name: linkData.title,
+                    type: "url",
+                    value: linkData.value,
+                }),
+            });
 
             return response;
         } catch (error) {
@@ -196,7 +193,7 @@ const ApiService = {
 
             if (!selectedProject || !selectedProject.id) {
                 throw new Error(
-                    "No project selected. Please select a project in settings."
+                    "No project selected. Please select a project in settings.",
                 );
             }
 
