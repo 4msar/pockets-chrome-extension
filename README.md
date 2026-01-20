@@ -29,6 +29,11 @@ To show your links, check out this [repository](https://github.com/4msar/link-hu
 4. Enter your Project ID
 5. Save settings
 
+## Deployment
+
+1. Create a zip file except the docs and .md files 
+2. Submit the zip file into chrome webstore.
+
 ## Usage
 
 ### Save via Context Menu
