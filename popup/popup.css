@@ -261,6 +261,12 @@ body {
   border: 1px solid #f4c7c3;
 }
 
+.message.info {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;

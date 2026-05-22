@@ -152,6 +152,28 @@ const ApiService = {
     },
 
     /**
+     * Get specific items from saved project
+     * @param {number} slug - The item slug
+     * @returns {Promise<Array>}
+     */
+    async getProjectItem(slug) {
+        try {
+            const selectedProject = await StorageService.getSelectedProject();
+            const response = await this.makeRequest(
+                `/values/${selectedProject.id}/${slug}`,
+                {
+                    method: "GET",
+                },
+            );
+
+            return response;
+        } catch (error) {
+            console.error("Error fetching item:", error);
+            throw error;
+        }
+    },
+
+    /**
      * Save a link to a project
      * @param {number} projectId - The project ID
      * @param {Object} linkData - Object containing title and value (URL)

@@ -85,6 +85,9 @@ async function initializeUI() {
 
         // Show form
         showForm();
+
+        // Check if current page link already exists
+        await checkCurrentPageExists();
     } catch (error) {
         console.error("Error initializing UI:", error);
         showMessage("Failed to initialize: " + error.message, "error");
@@ -131,6 +134,93 @@ async function loadSelectedProject() {
 }
 
 /**
+ * Generate slug from title
+ * @param {string} title - Title to convert to slug
+ * @returns {string} - Slug generated from title
+ */
+function generateSlug(title) {
+    return title
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+}
+
+/**
+ * Check if link already exists
+ * @param {string} title - Link title
+ * @returns {Promise<boolean>} - True if link exists, false otherwise
+ */
+async function checkIfLinkExists(title) {
+    try {
+        // Generate slug from title
+        const slug = generateSlug(title);
+
+        if (!slug) {
+            return false;
+        }
+
+        // Try to fetch by slug
+        try {
+            const item = await ApiService.getProjectItem(slug);
+            if (item && item.data) {
+                console.log("Link found by slug:", item);
+                return true;
+            }
+        } catch (error) {
+            console.log("Slug lookup failed, trying search...");
+        }
+
+        // Try to search by title
+        const searchResults = await ApiService.getProjectsData(1, title);
+        if (
+            searchResults &&
+            searchResults.data &&
+            searchResults.data.length > 0
+        ) {
+            console.log("Link found by search:", searchResults);
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.error("Error checking if link exists:", error);
+        // If check fails, allow user to proceed
+        return false;
+    }
+}
+
+/**
+ * Check if current page link already exists
+ */
+async function checkCurrentPageExists() {
+    try {
+        const title = elements.pageTitle.value;
+
+        if (!title) {
+            return;
+        }
+
+        const linkExists = await checkIfLinkExists(title);
+
+        if (linkExists) {
+            showMessage(
+                "ℹ️ This link is already saved in your project",
+                "info",
+            );
+            elements.saveBtn.disabled = true;
+            const btnText = elements.saveBtn.querySelector(".btn-text");
+            if (btnText) {
+                btnText.textContent = "Already Saved";
+            }
+        }
+    } catch (error) {
+        console.error("Error checking current page:", error);
+    }
+}
+
+/**
  * Handle save button click
  */
 async function handleSave() {
@@ -146,6 +236,14 @@ async function handleSave() {
 
         if (!url) {
             throw new Error("No URL to save");
+        }
+
+        // Check if link already exists
+        const linkExists = await checkIfLinkExists(title);
+
+        if (linkExists) {
+            showMessage("This link already exists in your project!", "error");
+            return;
         }
 
         // Send message to background script to save
