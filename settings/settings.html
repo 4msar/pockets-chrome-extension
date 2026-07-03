@@ -19,8 +19,88 @@
 
             <!-- Main Content -->
             <main class="main">
+                <!-- Register (shown when not configured) -->
+                <section class="section" id="registerSection" style="display: none">
+                    <div class="section-header">
+                        <h2>Get Started</h2>
+                    </div>
+
+                    <div class="card">
+                        <p class="card-intro">
+                            Create a new Pockets project to start saving links
+                            from your browser.
+                        </p>
+
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input
+                                type="email"
+                                id="registerEmail"
+                                class="input"
+                                placeholder="you@example.com"
+                                required
+                            />
+                            <small class="help-text"
+                                >Used for account recovery and notifications</small
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerProjectSlug">Project Slug</label>
+                            <input
+                                type="text"
+                                id="registerProjectSlug"
+                                class="input"
+                                placeholder="my-project"
+                                pattern="[a-z0-9-]{3,40}"
+                                required
+                            />
+                            <small class="help-text"
+                                >3–40 characters: lowercase letters, numbers, and
+                                hyphens only</small
+                            >
+                        </div>
+
+                        <div class="form-actions">
+                            <button
+                                class="button primary large"
+                                id="registerBtn"
+                            >
+                                <span class="btn-text">Create Project</span>
+                                <span class="btn-spinner" style="display: none">
+                                    <span class="spinner small"></span>
+                                    Creating...
+                                </span>
+                            </button>
+                        </div>
+
+                        <div
+                            class="message"
+                            id="registerMessage"
+                            style="display: none"
+                        >
+                            <span
+                                class="message-text"
+                                id="registerMessageText"
+                            ></span>
+                        </div>
+
+                        <div class="form-divider">
+                            <span>or</span>
+                        </div>
+
+                        <button
+                            class="button secondary large"
+                            id="showManualConfigBtn"
+                            type="button"
+                        >
+                            I already have an API key
+                        </button>
+                    </div>
+                </section>
+
                 <!-- API Configuration -->
-                <section class="section">
+                <section class="section" id="configSection">
                     <div class="section-header">
                         <h2>API Configuration</h2>
                     </div>
@@ -82,7 +162,7 @@
                 </section>
 
                 <!-- Actions -->
-                <section class="section">
+                <section class="section" id="actionsSection">
                     <div class="actions">
                         <button
                             class="button primary large"
@@ -106,8 +186,8 @@
             </main>
 
             <!-- Footer -->
-            <footer class="footer">
-                <p>
+            <footer class="footer" id="settingsFooter">
+                <p id="footerTip">
                     💡 <strong>Tip:</strong> You can get your API key and
                     Project ID from Pockets API,
                     <a target="_blank" href="https://pockets-api.msar.me/register"

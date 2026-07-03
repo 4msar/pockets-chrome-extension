@@ -90,6 +90,55 @@ const ApiService = {
     },
 
     /**
+     * Register a new project
+     * @param {string} email - User email address
+     * @param {string} projectSlug - Project slug (3-40 chars, lowercase, numbers, hyphens)
+     * @returns {Promise<Object>} - Registration response with api_key and project_slug
+     */
+    async register(email, projectSlug) {
+        const cleanUrl = this.API_URL.replace(/\/$/, "");
+        const url = `${cleanUrl}/register`;
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    project_slug: projectSlug,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                let errorMessage = `Registration failed with status ${response.status}`;
+
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorMessage =
+                        errorJson.error || errorJson.message || errorMessage;
+                } catch (e) {
+                    errorMessage = response.statusText || errorMessage;
+                }
+
+                throw new Error(errorMessage);
+            }
+
+            return await response.json();
+        } catch (error) {
+            if (error.message.includes("fetch")) {
+                throw new Error(
+                    "Network error. Please check your internet connection.",
+                );
+            }
+            throw error;
+        }
+    },
+
+    /**
      * Test API connection
      * @returns {Promise<Object>} - Returns success flag and message
      */

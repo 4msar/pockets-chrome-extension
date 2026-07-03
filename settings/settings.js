@@ -5,6 +5,7 @@
 
 // DOM Elements
 let elements = {};
+let manualConfigMode = false;
 
 /**
  * Create a project object from a project ID
@@ -19,13 +20,8 @@ function createProjectObject(projectId) {
  * Initialize settings page
  */
 document.addEventListener("DOMContentLoaded", async () => {
-    // Get DOM elements
     initElements();
-
-    // Set up event listeners
     setupEventListeners();
-
-    // Load existing settings
     await loadSettings();
 });
 
@@ -34,6 +30,14 @@ document.addEventListener("DOMContentLoaded", async () => {
  */
 function initElements() {
     elements = {
+        registerSection: document.getElementById("registerSection"),
+        configSection: document.getElementById("configSection"),
+        registerEmail: document.getElementById("registerEmail"),
+        registerProjectSlug: document.getElementById("registerProjectSlug"),
+        registerBtn: document.getElementById("registerBtn"),
+        registerMessage: document.getElementById("registerMessage"),
+        registerMessageText: document.getElementById("registerMessageText"),
+        showManualConfigBtn: document.getElementById("showManualConfigBtn"),
         apiToken: document.getElementById("apiToken"),
         projectId: document.getElementById("projectId"),
         testConnectionBtn: document.getElementById("testConnectionBtn"),
@@ -43,6 +47,8 @@ function initElements() {
         clearSettingsBtn: document.getElementById("clearSettingsBtn"),
         saveMessage: document.getElementById("saveMessage"),
         saveMessageText: document.getElementById("saveMessageText"),
+        actionsSection: document.getElementById("actionsSection"),
+        footerTip: document.getElementById("footerTip"),
     };
 }
 
@@ -50,18 +56,34 @@ function initElements() {
  * Set up event listeners
  */
 function setupEventListeners() {
-    // Test connection button
+    elements.registerBtn.addEventListener("click", handleRegister);
+    elements.showManualConfigBtn.addEventListener("click", handleShowManualConfig);
     elements.testConnectionBtn.addEventListener("click", handleTestConnection);
-
-    // Save settings button
     elements.saveSettingsBtn.addEventListener("click", handleSaveSettings);
-
-    // Clear settings button
     elements.clearSettingsBtn.addEventListener("click", handleClearSettings);
 
-    // Enable test button when inputs change
     elements.apiToken.addEventListener("input", () => hideConnectionMessage());
     elements.projectId.addEventListener("input", () => hideConnectionMessage());
+    elements.registerEmail.addEventListener("input", () => hideRegisterMessage());
+    elements.registerProjectSlug.addEventListener("input", () =>
+        hideRegisterMessage(),
+    );
+}
+
+/**
+ * Show register or config view based on configuration state
+ * @param {boolean} isConfigured
+ */
+function updateViewVisibility(isConfigured) {
+    const showRegister = !isConfigured && !manualConfigMode;
+
+    elements.registerSection.style.display = showRegister ? "block" : "none";
+    elements.configSection.style.display = showRegister ? "none" : "block";
+    elements.actionsSection.style.display = showRegister ? "none" : "block";
+
+    if (elements.footerTip) {
+        elements.footerTip.style.display = showRegister ? "none" : "block";
+    }
 }
 
 /**
@@ -70,6 +92,7 @@ function setupEventListeners() {
 async function loadSettings() {
     try {
         const settings = await StorageService.getAllSettings();
+        const isConfigured = await StorageService.isConfigured();
 
         if (settings.apiToken) {
             elements.apiToken.value = settings.apiToken;
@@ -78,9 +101,97 @@ async function loadSettings() {
         if (settings.selectedProject && settings.selectedProject.id) {
             elements.projectId.value = settings.selectedProject.id;
         }
+
+        updateViewVisibility(isConfigured);
     } catch (error) {
         console.error("Error loading settings:", error);
         showSaveMessage("Error loading settings: " + error.message, "error");
+    }
+}
+
+/**
+ * Switch from register form to manual API configuration
+ */
+function handleShowManualConfig() {
+    manualConfigMode = true;
+    updateViewVisibility(false);
+    hideRegisterMessage();
+}
+
+/**
+ * Validate project slug format
+ * @param {string} slug
+ * @returns {string|null} - Error message or null if valid
+ */
+function validateProjectSlug(slug) {
+    if (!/^[a-z0-9-]{3,40}$/.test(slug)) {
+        return "Project slug must be 3–40 characters: lowercase letters, numbers, and hyphens only";
+    }
+    return null;
+}
+
+/**
+ * Handle register button click
+ */
+async function handleRegister() {
+    try {
+        elements.registerBtn.disabled = true;
+        elements.registerBtn.classList.add("loading");
+        hideRegisterMessage();
+        hideSaveMessage();
+
+        const email = elements.registerEmail.value.trim();
+        const projectSlug = elements.registerProjectSlug.value
+            .trim()
+            .toLowerCase();
+
+        if (!email) {
+            showRegisterMessage("Please enter your email address", "error");
+            return;
+        }
+
+        if (!projectSlug) {
+            showRegisterMessage("Please enter a project slug", "error");
+            return;
+        }
+
+        const slugError = validateProjectSlug(projectSlug);
+        if (slugError) {
+            showRegisterMessage(slugError, "error");
+            return;
+        }
+
+        const result = await ApiService.register(email, projectSlug);
+
+        const success = await StorageService.saveAllSettings({
+            apiToken: result.api_key,
+            selectedProject: createProjectObject(result.project_slug),
+        });
+
+        if (!success) {
+            showRegisterMessage("Failed to save registration data", "error");
+            return;
+        }
+
+        elements.apiToken.value = result.api_key;
+        elements.projectId.value = result.project_slug;
+        elements.registerEmail.value = "";
+        elements.registerProjectSlug.value = "";
+
+        manualConfigMode = false;
+        updateViewVisibility(true);
+
+        showSaveMessage(
+            "Project created! Your API key has been saved. " +
+                (result.message || "Save your API key — it will not be shown again."),
+            "success",
+        );
+    } catch (error) {
+        console.error("Error registering:", error);
+        showRegisterMessage(error.message, "error");
+    } finally {
+        elements.registerBtn.disabled = false;
+        elements.registerBtn.classList.remove("loading");
     }
 }
 
@@ -89,7 +200,6 @@ async function loadSettings() {
  */
 async function handleTestConnection() {
     try {
-        // Disable button and show loading
         elements.testConnectionBtn.disabled = true;
         elements.testConnectionBtn.classList.add("loading");
         hideConnectionMessage();
@@ -108,11 +218,9 @@ async function handleTestConnection() {
             return;
         }
 
-        // Temporarily save to storage for API call
         await StorageService.setApiToken(apiToken);
         await StorageService.setSelectedProject(createProjectObject(projectId));
 
-        // Test connection
         const result = await ApiService.testConnection();
 
         if (result.success) {
@@ -124,7 +232,6 @@ async function handleTestConnection() {
         console.error("Error testing connection:", error);
         showConnectionMessage("Connection failed: " + error.message, "error");
     } finally {
-        // Re-enable button
         elements.testConnectionBtn.disabled = false;
         elements.testConnectionBtn.classList.remove("loading");
     }
@@ -135,12 +242,10 @@ async function handleTestConnection() {
  */
 async function handleSaveSettings() {
     try {
-        // Disable button and show loading
         elements.saveSettingsBtn.disabled = true;
         elements.saveSettingsBtn.classList.add("loading");
         hideSaveMessage();
 
-        // Validate inputs
         const apiToken = elements.apiToken.value.trim();
         const projectId = elements.projectId.value.trim();
 
@@ -154,13 +259,14 @@ async function handleSaveSettings() {
             return;
         }
 
-        // Save settings
         const success = await StorageService.saveAllSettings({
             apiToken,
             selectedProject: createProjectObject(projectId),
         });
 
         if (success) {
+            manualConfigMode = false;
+            updateViewVisibility(true);
             showSaveMessage("Settings saved successfully! ✅", "success");
         } else {
             showSaveMessage("Failed to save settings", "error");
@@ -169,7 +275,6 @@ async function handleSaveSettings() {
         console.error("Error saving settings:", error);
         showSaveMessage("Error saving settings: " + error.message, "error");
     } finally {
-        // Re-enable button
         elements.saveSettingsBtn.disabled = false;
         elements.saveSettingsBtn.classList.remove("loading");
     }
@@ -181,7 +286,7 @@ async function handleSaveSettings() {
 async function handleClearSettings() {
     if (
         !confirm(
-            "Are you sure you want to clear all settings? This action cannot be undone."
+            "Are you sure you want to clear all settings? This action cannot be undone.",
         )
     ) {
         return;
@@ -191,13 +296,16 @@ async function handleClearSettings() {
         const success = await StorageService.clearAllSettings();
 
         if (success) {
-            // Clear form
             elements.apiToken.value = "";
             elements.projectId.value = "";
+            elements.registerEmail.value = "";
+            elements.registerProjectSlug.value = "";
 
-            // Hide messages
+            manualConfigMode = false;
             hideConnectionMessage();
             hideSaveMessage();
+            hideRegisterMessage();
+            updateViewVisibility(false);
 
             showSaveMessage("Settings cleared successfully", "success");
         } else {
@@ -207,6 +315,24 @@ async function handleClearSettings() {
         console.error("Error clearing settings:", error);
         showSaveMessage("Error clearing settings: " + error.message, "error");
     }
+}
+
+/**
+ * Show register message
+ * @param {string} message
+ * @param {string} type
+ */
+function showRegisterMessage(message, type = "info") {
+    elements.registerMessageText.textContent = message;
+    elements.registerMessage.className = `message ${type}`;
+    elements.registerMessage.style.display = "block";
+}
+
+/**
+ * Hide register message
+ */
+function hideRegisterMessage() {
+    elements.registerMessage.style.display = "none";
 }
 
 /**
