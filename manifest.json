@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pockets - Save Links",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A browser extension to save and manage your favorite links easily.",
   "permissions": [
     "storage",

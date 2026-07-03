@@ -5,7 +5,7 @@
 
 const ApiService = {
     // Hardcoded API URL
-    API_URL: "https://silo.msar.dev/api/v1",
+    API_URL: "https://pockets-api.msar.me/api/v1",
 
     /**
      * Get API configuration from storage
@@ -141,6 +141,9 @@ const ApiService = {
                 `/values/${selectedProject.id}?${params}`,
                 {
                     method: "GET",
+                    headers: {
+                        "X-Project-Id": selectedProject.id,
+                    },
                 },
             );
 
@@ -163,6 +166,9 @@ const ApiService = {
                 `/values/${selectedProject.id}/${slug}`,
                 {
                     method: "GET",
+                    headers: {
+                        "X-Project-Id": selectedProject.id,
+                    },
                 },
             );
 
@@ -194,6 +200,9 @@ const ApiService = {
                     type: "url",
                     value: linkData.value,
                 }),
+                headers: {
+                    "X-Project-Id": selectedProject.id,
+                },
             });
 
             return response;

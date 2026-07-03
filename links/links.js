@@ -190,12 +190,12 @@ function createLinkCard(link) {
 
     const title = document.createElement("div");
     title.className = "link-title";
-    title.textContent = link.name || link.value || "Untitled";
+    title.textContent = link.title || link.link || "Untitled";
     title.title = title.textContent;
 
     const url = document.createElement("div");
     url.className = "link-url";
-    url.textContent = link.value || "";
+    url.textContent = link.link || "";
 
     const svgIcon = document.createElementNS(
         "http://www.w3.org/2000/svg",
