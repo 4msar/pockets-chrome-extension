@@ -184,7 +184,7 @@ function renderLinks(links) {
 function createLinkCard(link) {
     const card = document.createElement("a");
     card.className = "link-card";
-    card.href = link.value || "#";
+    card.href = link.link || "#";
     card.target = "_blank";
     card.rel = "noopener noreferrer";
 

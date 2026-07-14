@@ -250,7 +250,7 @@ const ApiService = {
                     value: linkData.value,
                 }),
                 headers: {
-                    "X-Project-Id": selectedProject.id,
+                    "X-Project-Id": projectId,
                 },
             });
 
