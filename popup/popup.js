@@ -164,8 +164,8 @@ async function checkIfLinkExists(title) {
         // Try to fetch by slug
         try {
             const item = await ApiService.getProjectItem(slug);
-            if (item && item.data) {
-                console.log("Link found by slug:", item);
+            console.log("Slug lookup result:", item);
+            if (item) {
                 return true;
             }
         } catch (error) {
